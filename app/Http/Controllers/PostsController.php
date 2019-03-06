@@ -10,6 +10,8 @@ use App\Category;
 
 class PostsController extends Controller
 {
+
+    
     /**
      * Display a listing of the resource.
      *
@@ -68,15 +70,15 @@ class PostsController extends Controller
             'title'=> $request->title,
             
             'content' => $request->content,
-            'featured' => 'uploads/posts'.$featured_new_name,
+            'featured' => 'uploads/posts/'.$featured_new_name,
             'category_id' => $request->category_id,
             'slug' => str_slug($request->title)
             
 
         ]);
-        Session::flash('success', 'Post has been deleted successfully');
+        Session::flash('success', 'Post has been stored successfully');
 
-        return redirect()->back();
+        return redirect()->route('posts');
     }
 
     /**
@@ -99,6 +101,10 @@ class PostsController extends Controller
     public function edit($id)
     {
         //
+        $post = Post::find($id);
+
+
+        return view('admin.posts.edit')->with('post', $post)->with('categories',Category::all());
     }
 
     /**
@@ -111,6 +117,38 @@ class PostsController extends Controller
     public function update(Request $request, $id)
     {
         //
+
+        $this->validate($request,[
+
+            'title' => 'required',
+            'content' => 'required',
+            'category_id' => 'required'
+        ]);
+        $post = Post::find($id);
+
+
+        if($request->hasFile('featured')){
+
+            $featured = $request->featured;
+
+            $featured_new_name = time() . $featured->getClientOriginalName();  
+            
+            $featured->move('uploads/posts', $featured_new_name);
+
+            $post->featured = 'uploads/posts/'.$featured_new_name;
+
+        }
+        $post->title  = $request->title;
+        $post->content = $request->content;
+        $post->category_id = $request->category_id;
+
+        $post->save();
+
+        Session::flash('success', 'Post has been updated successfully');
+
+        return redirect()->route('posts');
+
+
     }
 
     /**
@@ -122,5 +160,47 @@ class PostsController extends Controller
     public function destroy($id)
     {
         //
+        $post = Post::find($id);
+
+        $post->delete();
+
+
+        Session::flash('success', 'Post has been trashed successfully');
+        return redirect()->back();
+
+    }
+
+    public function trashed()
+    {
+        //
+        $posts = Post::onlyTrashed()->get();
+
+       return view('admin.posts.trashed')->with('posts', $posts);
+
+
+
+    }
+
+    public function kill($id)
+    {
+        //
+        $post = Post::withTrashed()->where('id',$id)->first();
+
+        $post->forceDelete();
+
+        Session::flash('success', 'Post has been deleted successfully');
+
+        return redirect()->back();
+
+    }
+
+    public function restore($id){
+
+        $post = Post::withTrashed()->where('id', $id)->first();
+
+        $post->restore();
+        Session::flash('success', 'Post has been restored successfully');
+
+        return redirect()->route('posts');
     }
 }

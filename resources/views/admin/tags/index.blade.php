@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="card">
-     <div class="card-header"> Categories</div>
+     <div class="card-header"> Tags</div>
 
           <div class="card-body">
                         <!-- <div class="alert alert-success" role="alert">
@@ -11,32 +11,34 @@
 
                     <thead>
                          <th>
-                              Category Name   
+                              Tag Name   
                          </th> 
                          
                          <th>
-                               Editing
+                               Edit
                          </th>
                          <th>
-                                   Deleting
+                                Delete
                          </th>
                     </thead>
                     <tbody>
-                         @if($categories->count() > 0)
-                              @foreach($categories as $category)
+                         @if($tags->count() > 0)
+                              @foreach($tags as $tag)
 
                                    <tr>
                                         <td>
-                                        {{ $category->name}}
+                                        {{ $tag->tag}}
                                         </td>
                                         <td>
-                                        <a href="{{route('category.edit', ['id'=>$category->id])}}" class="btn btn-xs btn-info">
+                                        <a href="{{route('tag.edit', ['id'=>$tag ->id])}}" class="btn btn-xs btn-info">
                                              <span class="fa fa-pen"></span>
                                         </a>
                                         </td>
                                         <td>
-                                        <a href="{{route('category.delete', ['id'=>$category->id])}}" class="btn btn-xs btn-danger">
-                                             <span class="fa fa-trash"></span>
+                                        <a href="{{route('tag.delete', ['id'=>$tag->id])}}" class="btn btn-xs btn-danger">
+                                             <span class="fa fa-trash">
+                                                 Delete
+                                             </span>
                                         </a>
                                         </td>
 
@@ -47,7 +49,7 @@
                          @else
 
                          <tr>
-                            <th colspan="5" class="text-center">No Categories yet.</th>
+                            <th colspan="5" class="text-center">No Tags yet.</th>
 
                         </tr>
 

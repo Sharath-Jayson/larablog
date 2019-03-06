@@ -10,7 +10,6 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -19,7 +18,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{asset('css/toastr.min.css')}}" rel ="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
 </head>
 <body>
     <div id="app">
@@ -91,10 +90,23 @@
                 <li class="list-group-item">
                 <a href="{{route('categories')}}">Categories</a>
                 </li>
+
+                <li class="list-group-item">
+                <a href="{{route('tags')}}">Tags</a>
+                </li>
+
+                <li class="list-group-item">
+                <a href="{{route('tag.create')}}">Create a Tag</a>
+                </li>
                 
                 <li class="list-group-item">
                 <a href="{{route('posts')}}">All Posts</a>
                 </li>
+
+                <li class="list-group-item">
+                <a href="{{route('posts.trashed')}}">All Trashed Posts</a>
+                </li>
+
                 <li class="list-group-item">
                 <a href="{{route('category.create')}}">Create New Category</a>
                 </li>
@@ -120,17 +132,20 @@
         </main>
     </div>
     <!--Scripts-->
-    <script src="/js/app.js"></script>
-    <script src="{{asset('js/toastr.min.js')}}"></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    
     <script>
     @if(Session::has('success'))
      
-       toaster.success("{{ Session::get('success') }}")
+       toastr.success("{{ Session::get('success') }}")
     @endif
     
     @if(Session::has('info'))
      
-       toaster.info("{{ Session::get('info') }}")
+       toastr.info("{{ Session::get('info') }}")
     @endif
     </script>
 

@@ -14,10 +14,7 @@ class Post extends Model
         'title', 'content', 'category_id','featured','slug'
     ];
 
-    public function getFeatuuredAttribute($featured)
-    {
-        return asset($featured);
-    }
+    
 
     protected $dates = ["deleted_at"];
     //Post can belong to only one category
@@ -25,5 +22,10 @@ class Post extends Model
     public function category(){
 
         return $this->belongsTo('App\Category');
+    }
+
+    public function tags(){
+
+        return $this->belongsToMany('App\Tag');
     }
 }
