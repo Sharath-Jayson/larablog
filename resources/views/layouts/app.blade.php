@@ -16,9 +16,10 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{asset('css/toastr.min.css')}}" rel ="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -92,6 +93,9 @@
                 </li>
                 
                 <li class="list-group-item">
+                <a href="{{route('posts')}}">All Posts</a>
+                </li>
+                <li class="list-group-item">
                 <a href="{{route('category.create')}}">Create New Category</a>
                 </li>
 
@@ -115,5 +119,20 @@
         </div>
         </main>
     </div>
+    <!--Scripts-->
+    <script src="/js/app.js"></script>
+    <script src="{{asset('js/toastr.min.js')}}"></script>
+    <script>
+    @if(Session::has('success'))
+     
+       toaster.success("{{ Session::get('success') }}")
+    @endif
+    
+    @if(Session::has('info'))
+     
+       toaster.info("{{ Session::get('info') }}")
+    @endif
+    </script>
+
 </body>
 </html>

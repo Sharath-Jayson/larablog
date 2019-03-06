@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Session;
+use App\Post;
+use App\Category;
+
 class PostsController extends Controller
 {
     /**
@@ -14,6 +18,7 @@ class PostsController extends Controller
     public function index()
     {
         //
+        return view('admin.posts.index')->with('posts', Post::all());
     }
 
     /**
@@ -24,7 +29,17 @@ class PostsController extends Controller
     public function create()
     {
         //
-        return view('admin.posts.create');
+
+        $categories= Category::all();
+
+        if($categories->count()==0)
+        {
+            Session::flash('info', 'You must have some categories  before attempting to create a post.' );
+
+
+      return redirect()->back();
+        }
+        return view('admin.posts.create')->with('categories', $categories);
     }
 
     /**
@@ -39,9 +54,29 @@ class PostsController extends Controller
         $this->validate($request,[
             'title'=> 'required',
             'featured' => 'required|image',
-            'content' => 'required'
+            'content' => 'required',
+            'category_id' => 'required'
 
         ]);
+
+        $featured = $request->featured;
+        $featured_new_name = time().$featured->getClientOriginalName();
+        $featured->move('uploads/posts', $featured_new_name);
+
+        $post = Post::create([
+
+            'title'=> $request->title,
+            
+            'content' => $request->content,
+            'featured' => 'uploads/posts'.$featured_new_name,
+            'category_id' => $request->category_id,
+            'slug' => str_slug($request->title)
+            
+
+        ]);
+        Session::flash('success', 'Post has been deleted successfully');
+
+        return redirect()->back();
     }
 
     /**

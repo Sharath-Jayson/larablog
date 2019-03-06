@@ -40,6 +40,11 @@ Route::group(['prefix'=>'admin', 'middleware' => 'auth'], function(){
 
     ]);
 
+    Route::get('/posts',[
+        'uses' => 'PostsController@index',
+        'as'=>'posts'
+   ]);
+
     Route::get('/category/create', [
         'uses'=>'CategoriesController@create',
         'as'=>'category.create'
@@ -56,6 +61,25 @@ Route::group(['prefix'=>'admin', 'middleware' => 'auth'], function(){
         'uses'=>'CategoriesController@store',
         'as'=>'category.store'
 
+    ]);
+    
+
+
+    Route::get('category/edit/{id}', [
+        'uses' =>'CategoriesController@edit',
+        'as' =>'category.edit'
+
+    ]);
+
+    Route::get('category/delete/{id}', [
+        'uses' =>'CategoriesController@destroy',
+        'as' =>'category.delete'
+
+    ]);
+
+    Route::post('category/update/{id}', [
+        'uses' => 'CategoriesController@update',
+        'as' => 'category.update'
     ]);
 
 });
