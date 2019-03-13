@@ -9,6 +9,28 @@
 
 ## About Laravel
 
+
+
+   <!-- REgitry controllercode for creating register users
+   
+   protected function create(array $data)
+    {
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+
+        $profile = Profile::create([
+             
+            'user_id' =>$user->id,
+            'avatar' => 'uploads/avatars/1.jpg'
+        ]);
+
+        return $user;
+    }
+} -->
+
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
 - [Simple, fast routing engine](https://laravel.com/docs/routing).

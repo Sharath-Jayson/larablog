@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Session;
 use App\Post;
 use App\Category;
+use App\Tag; 
 
 class PostsController extends Controller
 {
@@ -32,16 +33,20 @@ class PostsController extends Controller
     {
         //
 
-        $categories= Category::all();
+        $categories = Category::all();
 
-        if($categories->count()==0)
+        $tags = Tag::all();
+
+        if($categories->count()==0 || $tags->count()==0)
+
         {
-            Session::flash('info', 'You must have some categories  before attempting to create a post.' );
+            Session::flash('info', 'You must have some categories and tags before attempting to create a post.' );
 
 
       return redirect()->back();
         }
-        return view('admin.posts.create')->with('categories', $categories);
+        return view('admin.posts.create')->with('categories', $categories)
+                                         ->with('tags', $tags);
     }
 
     /**
@@ -54,10 +59,16 @@ class PostsController extends Controller
     {
         //
         $this->validate($request,[
+
             'title'=> 'required',
+
             'featured' => 'required|image',
+
             'content' => 'required',
-            'category_id' => 'required'
+
+            'category_id' => 'required',
+
+            'tags' => 'required'
 
         ]);
 
@@ -70,13 +81,17 @@ class PostsController extends Controller
             'title'=> $request->title,
             
             'content' => $request->content,
-            'featured' => 'uploads/posts/'.$featured_new_name,
-            'category_id' => $request->category_id,
-            'slug' => str_slug($request->title)
-            
 
+            'featured' => 'uploads/posts/'.$featured_new_name,
+
+            'category_id' => $request->category_id,
+
+            'slug' => str_slug($request->title)
         ]);
-        Session::flash('success', 'Post has been stored successfully');
+
+        $post->tags()->attach($request->tags);
+
+        Session::flash('success', 'Post has been created successfully');
 
         return redirect()->route('posts');
     }
@@ -104,7 +119,10 @@ class PostsController extends Controller
         $post = Post::find($id);
 
 
-        return view('admin.posts.edit')->with('post', $post)->with('categories',Category::all());
+        return view('admin.posts.edit')->with('post', $post)
+                                       ->with('categories',Category::all())
+                                       ->with('tags',Tag::all());
+
     }
 
     /**
@@ -143,6 +161,7 @@ class PostsController extends Controller
         $post->category_id = $request->category_id;
 
         $post->save();
+        $post->tags()->sync($request->tags);
 
         Session::flash('success', 'Post has been updated successfully');
 

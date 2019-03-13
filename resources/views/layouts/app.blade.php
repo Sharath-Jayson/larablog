@@ -95,10 +95,27 @@
                 <a href="{{route('tags')}}">Tags</a>
                 </li>
 
+                @if(Auth::user()->admin)
+
+                    <li class="list-group-item">
+                    <a href="{{route('users')}}">Users</a>
+                    </li>
+
+                    <li class="list-group-item">
+                    <a href="{{route('user.create')}}">Create New User</a>
+                    </li>
+
+                @endif
+
+                <li class="list-group-item">
+                    <a href="{{route('user.profile')}}">My Profile </a>
+                </li>
+
+               
+                
                 <li class="list-group-item">
                 <a href="{{route('tag.create')}}">Create a Tag</a>
                 </li>
-                
                 <li class="list-group-item">
                 <a href="{{route('posts')}}">All Posts</a>
                 </li>
@@ -115,6 +132,13 @@
                 <a href="{{ route('post.create') }}">Create New Post</a>
                 </li>
 
+
+                @if(Auth::user()->admin)
+
+                <li class="list-group-item">
+                <a href="{{ route('settings') }}">Settings</a>
+                </li>
+                @endif
 
                 </ul>              
                 </div>
@@ -133,7 +157,9 @@
     </div>
     <!--Scripts-->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     
@@ -148,6 +174,6 @@
        toastr.info("{{ Session::get('info') }}")
     @endif
     </script>
-
+   @yield('scripts')
 </body>
 </html>

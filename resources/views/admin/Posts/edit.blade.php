@@ -28,10 +28,38 @@
                         <select class="form-control" name="category_id" id="category">
                           @foreach($categories as $category)
                           
-                           <option value="{{$category->id}}">{{$category->name}}</option>
+                           <option value="{{$category->id}}"
+
+                           @if($post->category->id == $category->id)
+                               selected
+                           @endif
+                           
+                           >{{$category->name}}</option>
                           @endforeach
                         </select>
                      </div> 
+
+                     <div class="form-group">
+                        <label for="tags">Select Tags</label>
+                        @foreach($tags as $tag)
+                        <div class="checkbox">
+
+                        <label><input type="checkbox" name="tags[]" value="{{ $tag->id }}"
+                        
+                        @foreach($post->tags as $t)
+                           @if($tag->id == $t->id)
+                               checked
+                           @endif
+
+                        @endforeach
+                        
+                        > &nbsp; {{ $tag->tag }}</label>
+
+                        </div>
+                        @endforeach
+
+                      </div>
+
                      <div class="form-group">
                         <label for="content">Content</label>
                         <textarea class="form-control" name="content" id="content" cols="5" rows="5">{{$post->content}}</textarea>
