@@ -86,7 +86,8 @@ class PostsController extends Controller
 
             'category_id' => $request->category_id,
 
-            'slug' => str_slug($request->title)
+            'slug' => str_slug($request->title),
+            'user_id'=> Auth::id()
         ]);
 
         $post->tags()->attach($request->tags);

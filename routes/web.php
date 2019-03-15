@@ -18,6 +18,40 @@ Route::get('/', [
 
 ]);
 
+Route::get('/results', function() {
+
+    $posts = \App\Post::where('title', 'like', '%'. request('query').'%' )->get();
+
+    return view('results')->with('posts', $posts)
+                          ->with('title', 'Search Results for'.request('query'))
+                          ->with('categories', \App\Category::take(5)->get())
+                          ->with('settings', \App\Setting::first())
+                          ->with('query', request('query'));
+
+});
+
+
+Route::get('/post/{slug}', [
+
+    'uses' =>'FrontendController@singlePost',
+    'as' =>'post.single'
+
+]);
+
+Route::get('/category/{id}', [
+
+    'uses' =>'FrontendController@category',
+    'as' =>'category.single'
+
+]);
+
+Route::get('/tag/{id}', [
+
+    'uses' =>'FrontendController@tag',
+    'as' =>'tag.single'
+
+]);
+
 Auth::routes();
 
 
