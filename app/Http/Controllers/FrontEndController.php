@@ -23,7 +23,7 @@ class FrontEndController extends Controller
                             ->with('third_post', Post::orderBy('created_at', 'desc')->skip(2)->take(1)->get()->first())
                             ->with('angular', Category::find(1))
                             ->with('laravel', Category::find(2))
-                            ->with('tutorials', Category::find(4))
+                            ->with('tutorials', Category::find(3))
                             ->with('settings', Setting::first());
 
 
